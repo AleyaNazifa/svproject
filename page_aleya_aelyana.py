@@ -305,7 +305,7 @@ def render():
             y="Count",
             color="DaytimeFatigue",
             title="Fatigue Level by Insomnia Category",
-            category_orders={"DaytimeFatigue": freq_order, "Insomnia Category": insomnia_order},
+            category_orders={"DaytimeFatigue": freq_order, "Insomnia_Category": insomnia_order},
             color_discrete_sequence=SUNSET,
             barmode="stack",
         )
