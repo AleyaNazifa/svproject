@@ -59,7 +59,7 @@ def render():
     # ------------------------------------------
     # Header
     # ------------------------------------------
-    st.title("Interpretation Dashboard: Academic Impact of Sleep-Related Issues (Aelyana)")
+    st.title("Interpretation Dashboard: Impact of Sleep Related Issues on Academic Performance")
     st.markdown(
         "This dashboard evaluates how insomnia severity relates to **focus**, **fatigue**, **assignment impact**, "
         "**academic performance**, and overall **sleep–academic correlations**."
