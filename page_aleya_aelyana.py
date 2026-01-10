@@ -289,7 +289,7 @@ def render():
     # ------------------------------------------
     # d) Daytime Fatigue (Stacked bar)
     # ------------------------------------------
-    st.subheader("d) Fatigue Level by Insomnia Severity")
+    st.subheader("d) Fatigue Level by Insomnia Category")
 
     if {"Insomnia_Category", "DaytimeFatigue"}.issubset(df.columns):
         fatigue_table = pd.crosstab(df["Insomnia_Category"], df["DaytimeFatigue"], dropna=False)
@@ -304,8 +304,8 @@ def render():
             x="Insomnia_Category",
             y="Count",
             color="DaytimeFatigue",
-            title="Fatigue Level by Insomnia Severity",
-            category_orders={"DaytimeFatigue": freq_order, "Insomnia_Category": insomnia_order},
+            title="Fatigue Level by Insomnia Category",
+            category_orders={"DaytimeFatigue": freq_order, "Insomnia Category": insomnia_order},
             color_discrete_sequence=SUNSET,
             barmode="stack",
         )
