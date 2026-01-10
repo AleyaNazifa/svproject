@@ -195,7 +195,7 @@ def render():
     # ------------------------------------------
     # b) GPA vs Insomnia Index (Box plot)
     # ------------------------------------------
-    st.subheader("b) Insomnia Severity Index Across GPA Categories")
+    st.subheader("b) Insomnia Severity Index Across GPA Category")
 
     if {"GPA", "InsomniaSeverity_index"}.issubset(df.columns):
         gpa_order = sorted(df["GPA"].dropna().unique().tolist())
@@ -205,7 +205,7 @@ def render():
             x="GPA",
             y="InsomniaSeverity_index",
             color="GPA",
-            title="Insomnia Severity Index Across GPA Categories",
+            title="Insomnia Severity Index Across GPA Category",
             category_orders={"GPA": gpa_order},
             color_discrete_sequence=SUNSET,
             points="outliers",
