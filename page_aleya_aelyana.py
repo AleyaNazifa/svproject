@@ -301,7 +301,7 @@ def render():
 
         fig_d = px.bar(
             fatigue_melted,
-            x="Insomnia Category",
+            x="Insomnia_Category",
             y="Count",
             color="DaytimeFatigue",
             title="Fatigue Level by Insomnia Category",
