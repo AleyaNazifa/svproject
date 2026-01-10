@@ -330,7 +330,7 @@ def render():
     # ------------------------------------------
     # e) Academic Performance (Box plot)
     # ------------------------------------------
-    st.subheader("e) Academic Performance by Insomnia Severity")
+    st.subheader("e) Academic Performance by Insomnia Category")
 
     if {"Insomnia_Category", "AcademicPerformance"}.issubset(df.columns):
         fig_e = px.box(
@@ -345,7 +345,7 @@ def render():
         )
         fig_e.update_layout(
             xaxis_title="Insomnia Severity",
-            yaxis_title="Academic Performance (GPA / Self-rated)",
+            yaxis_title="Academic Performance",
             showlegend=False,
             yaxis=dict(autorange="reversed"),
         )
