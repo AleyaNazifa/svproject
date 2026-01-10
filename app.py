@@ -103,8 +103,8 @@ h1, h2, h3 {
 
 home = st.Page("home.py", title="Homepage", icon="🏠", default=True)
 aleya_nazifa = st.Page("page_aleya_nazifa.py", title="Sleep Patterns", icon="😴")
-aleya_aelyana = st.Page("page_aleya_aelyana.py", title="Academic Impact", icon="📚")
 nash = st.Page("page_nash.py", title="Lifestyle Factors", icon="🏃")
+aleya_aelyana = st.Page("page_aleya_aelyana.py", title="Academic Impact", icon="📚")
 
 pg = st.navigation({"Menu": [home, aleya_nazifa, nash, aleya_aelyana]})
 pg.run()
