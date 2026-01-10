@@ -84,11 +84,13 @@ def render():
         st.markdown(
             f"""
 **Key Insights**
-* The distribution shows clustering around typical student sleep ranges.
-* **{short_n} students ({pct(short_n, total):.1f}%)** fall into the short-sleep group (<6 hours), indicating a meaningful subgroup with potential sleep deprivation.
+* The distribution shows clustering around common student sleep ranges, with most responses concentrated between 5–6 hours.
+* A substantial majority of students are not meeting recommended sleep duration.
+* 74 students (71.8%) fall into the short-sleep group (<6 hours), indicating widespread sleep deprivation among respondents.
 
 **Conclusion**
-* Short sleep is a strong risk marker for reduced alertness and weaker learning efficiency, making this subgroup important for targeted sleep hygiene interventions.
+* Short sleep duration is highly prevalent among UMK students and represents a major sleep health concern.
+* This pattern suggests increased risk for daytime fatigue, reduced alertness, and impaired academic functioning, warranting targeted sleep awareness interventions.
             """.strip()
         )
     else:
@@ -121,11 +123,14 @@ def render():
         st.markdown(
             f"""
 **Key Insights**
-* Categorisation simplifies interpretation by separating respondents into risk-relevant groups.
-* Short sleepers represent **{pct(short_n, total):.1f}%**, while the adequate group reflects students meeting typical sleep recommendations.
+* Categorisation simplifies interpretation by grouping students into risk-relevant sleep categories.
+* 74 students (71.8%) are short sleepers (<6 hours).
+* Only 21 students (20.4%) achieve adequate sleep (6–8 hours).
+* A small minority, 8 students (7.8%), report long sleep (>8 hours).
 
 **Conclusion**
-* Sleep duration categories help highlight at-risk students (short sleepers) and support clearer comparisons across other sleep indicators like bedtime and quality.
+* The dominance of the short-sleep category highlights that insufficient sleep is the norm rather than the exception.
+* This categorisation clearly identifies a high-risk group that may benefit most from sleep hygiene education and behavioural interventions.
             """.strip()
         )
     else:
@@ -149,11 +154,14 @@ def render():
         st.markdown(
             f"""
 **Key Insights**
-* Bedtime patterns show how students distribute their sleep timing on weekdays.
-* **{late_n} students ({pct(late_n, total):.1f}%)** report bedtime after midnight, indicating delayed sleep timing for a notable group.
+* Bedtime patterns show a strong shift toward late-night sleep schedules.
+* 74 students (71.8%) report going to bed after 12 AM on weekdays.
+* 22 students (21.4%) sleep between 11 PM–12 AM.
+* Very few students sleep early which 5 students (4.9%) between 10–11 PM and 2 students (1.9%) before 10 PM.
 
 **Conclusion**
-* Late bedtimes can reduce total sleep opportunity when class schedules require early wake times, increasing the risk of fatigue and sleep dissatisfaction.
+* Delayed bedtime is extremely common and likely contributes to reduced total sleep duration, especially when early class schedules are present.
+* Late-night sleep timing represents a key behavioural risk factor for chronic sleep deprivation among students.
             """.strip()
         )
     else:
@@ -184,11 +192,13 @@ def render():
         st.markdown(
             """
 **Key Insights**
-* Sleep quality varies across bedtime categories, with later bedtime groups often showing lower ratings or greater variability.
-* This suggests that delayed sleep timing may be linked to poorer subjective sleep experience.
+* Sleep quality varies noticeably across bedtime categories.
+* Students with later bedtimes (especially after 12 AM) show lower sleep quality ratings and greater variability.
+* Earlier bedtime groups demonstrate more stable and generally better perceived sleep quality.
 
 **Conclusion**
-* Promoting earlier and consistent bedtimes is supported as a practical sleep hygiene recommendation to improve perceived sleep quality.
+* Delayed sleep timing appears to be associated with poorer subjective sleep experience.
+* Encouraging earlier and more consistent bedtimes may improve perceived sleep quality and overall sleep satisfaction among students.
             """.strip()
         )
     else:
@@ -208,11 +218,13 @@ def render():
         st.markdown(
             f"""
 **Key Insights**
-* The heatmap shows that insomnia symptoms frequently overlap rather than occurring independently.
-* **{both_n} students ({pct(both_n, total):.1f}%)** report frequent difficulty falling asleep together with frequent night awakenings.
+* The heatmap shows that insomnia symptoms frequently overlap rather than occur independently.
+* The highest concentrations appear where both symptoms occur at similar frequencies.
+* 8 students (7.8%) report frequent difficulty falling asleep together with frequent night awakenings, indicating a subgroup with more severe sleep disruption.
 
 **Conclusion**
-* Co-occurring symptoms often indicate more severe sleep disruption, highlighting a subgroup that may benefit from targeted sleep support and intervention strategies.
+* Co-occurring insomnia symptoms suggest compounded sleep problems rather than isolated issues.
+* This subgroup represents students at higher risk of chronic insomnia and may require targeted support or clinical referral rather than general sleep advice.
             """.strip()
         )
     else:
