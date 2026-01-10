@@ -102,12 +102,13 @@ def render():
 
         st.markdown("""
 **Key Insights**
-* Most students have moderate insomnia, with "Sometimes" being the most common focus problem.
-* Low / No Insomnia students rarely report serious disruptions ("Often"/"Always").
-* Severe insomnia shows a sharp shift toward "Often" and "Always", indicating higher cognitive disruption.
+* Most students (64) have moderate insomnia, with "Sometimes" (36 students) being the most common focus problem.
+* Low / No Insomnia Group dominated by "Rarely" (9) and "Sometimes" (8) responses, serious disruptions ("Often"/"Always") are almost none.
+* Severe Insomnia Group shows a concerning change which "Rarely" almost disappears (1 student), replaced by a sharp increase in "Often" and "Always".
+* Zero (0) students reported "Never" experiencing concentration issues, proving that focus is a universal challenge, but it becomes chronic with poor sleep.
 
 **Conclusion**
-* There is a direct relationship between insomnia severity and difficulty maintaining focus, increasing academic risk through persistent attention impairment.
+* There is a direct relationship between insomnia severity and difficulty maintaining focus. Severe insomnia doesn't just mean less sleep but it creates a high risk of academic failure due to ongoing cognitive impairment.
         """.strip())
         st.divider()
     else:
