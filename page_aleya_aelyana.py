@@ -344,7 +344,7 @@ def render():
             points="outliers",
         )
         fig_e.update_layout(
-            xaxis_title="Insomnia Severity",
+            xaxis_title="Insomnia Category",
             yaxis_title="Academic Performance",
             showlegend=False,
             yaxis=dict(autorange="reversed"),
