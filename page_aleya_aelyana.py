@@ -171,7 +171,7 @@ def render():
                 "ConcentrationDifficulty": freq_order,
             },
             color_discrete_sequence=SUNSET,
-            labels={"Count": "Number of Students", "Insomnia_Category": "Insomnia Level"},
+            labels={"Count": "Number of Students", "Insomnia_Category": "Insomnia Category"},
         )
         st.plotly_chart(fig_a, use_container_width=True)
 
