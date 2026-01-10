@@ -42,8 +42,7 @@ def render():
 <div class="card">
   <div class="card-title">Objective (Sleep Patterns)</div>
   <div class="interpretation">
-    To analyse student sleep patterns by visualising (A1) sleep duration distribution, (A2) sleep duration categories,
-    (A3) bedtime timing, (A4) sleep quality across bedtimes, and (A5) co-occurrence of key insomnia symptoms.
+    To analyze sleep patterns and insomnia severity among UMK students by examining sleep duration, sleep quality, bedtime habits, and insomnia-related symptoms.
   </div>
 </div>
 """,
