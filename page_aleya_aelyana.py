@@ -136,12 +136,13 @@ def render():
 
         st.markdown("""
 **Key Insights**
-* As GPA decreases, insomnia severity tends to increase (higher medians and broader spread).
-* High GPA categories show lower median ISI, suggesting healthier sleep profiles.
-* Some high-performing outliers still experience high insomnia, indicating resilience is possible but not typical.
+* As GPA decreases, the insomnia severity "box" shifts upward. Higher GPA is associated with more consistent and lower insomnia scores.
+* GPA 3.70 - 4.00 category show lowest median insomnia score (4), placing these students in the "Low/No Insomnia" category.
+* GPA 3.00 - 3.69 category show median score increases to 7. Interestingly, outliers reaching scores of 12-13 indicate that some students maintain good grades despite high insomnia.
+* GPA 2.50 - 2.49 group show highest spread and maximum scores (reaching 14), indicating that this group experiences the strongest insomnia symptoms.
 
 **Conclusion**
-* Managing insomnia is strongly associated with maintaining better academic performance, especially in overall grade outcomes.
+* Managing insomnia is a key factor in academic success. Students with the best grades tend to maintain the healthiest sleep profiles.
         """.strip())
         st.divider()
     else:
@@ -170,11 +171,12 @@ def render():
 
         st.markdown("""
 **Key Insights**
-* Impact shifts upward with insomnia severity: moderate/severe insomnia groups report more moderate-to-severe assignment disruption.
-* Severe insomnia group rarely reports “No impact”, indicating academic disruption becomes the norm.
+* Low / No Insomnia: Even with good sleep, only 3 students reported "No impact," with most feeling at least a "Minor impact" (8) on their work.
+* Moderate Insomnia: A large spike in "Moderate" (28) and "Major" (13) impacts, indicating that sleep issues are starting to damage the quality of their assignment.
+* Severe Insomnia: Negative impact is the standard.16 out of 21 students are "Moderate" or "Major" impacted, with only 1 student reporting "No impact".
 
 **Conclusion**
-* As insomnia severity increases, students become significantly more likely to experience difficulty meeting deadlines and completing coursework effectively.
+* The insomnia severity is directly correlates with academic disruption. As sleep health worsens, the ability to complete coursework effectively is significantly compromised.
         """.strip())
         st.divider()
     else:
@@ -202,12 +204,12 @@ def render():
 
         st.markdown("""
 **Key Insights**
-* Fatigue increases progressively with insomnia severity.
-* Severe insomnia group shows fatigue as near-universal, often reported “Sometimes” to “Always”.
+* Low / No Insomnia: Most students feel energized, with "Rarely" (11) or "Never" (4) being the top responses.
+* Moderate Insomnia: A big shift where "Sometimes" (37) becomes the norm. The appearance of "Always" fatigued students (3) shows moderate issues can still cause persistent fatigue.
+* Severe Insomnia: Fatigue is nearly universal. 20 out of 21 students reported fatigue "Sometimes" to "Always".
 
 **Conclusion**
-* Daytime fatigue appears as a critical pathway linking insomnia to academic disruption, reducing attentional capacity and study endurance.
-        """.strip())
+* There is a progressive increase in fatigue associated with sleep health. Fatigue acts as a barrier that may drive the concentration and performance issues seen throughout this study.
         st.divider()
     else:
         st.warning("Missing columns for Chart d).")
@@ -232,11 +234,12 @@ def render():
 
         st.markdown("""
 **Key Insights**
-* Low/No insomnia students cluster in higher self-rated performance categories.
-* Severe insomnia shifts ratings downward toward “Average/Good” with reduced presence of “Very good/Excellent”.
+* Low/No Insomnia students feel the most confident, rating themselves between "Good" and "Very good".
+* Moderate Insomnia causes ratings to spread out. The median remains "Good," but the range drops to "Average".
+* Severe Insomnia shifts the entire box down to "Average" and "Good," with almost no representation of "Very good".
 
 **Conclusion**
-* Insomnia severity negatively correlates with academic self-perception, potentially reflecting reduced confidence and sustained cognitive strain.
+* Insomnia severity has a negative correlation with academic self perception. Severe insomnia acts as a "ceiling" that makes it harder to achieve or feel like a high achiever.
         """.strip())
     else:
         st.warning("Missing columns for Chart e).")
@@ -277,12 +280,13 @@ def render():
 
         st.markdown("""
 **Key Insights**
-* Insomnia severity relates strongly to fatigue and concentration difficulty, showing a clear functional pathway.
-* Relationships between “sleep hours” and GPA/CGPA may be weaker than “sleep quality/insomnia”, implying quality is the primary risk driver.
-* GPA and CGPA remain strongly correlated, as expected, but sleep variables contribute via fatigue and cognitive impairment.
+* Estimated sleep hours show a moderate positive correlation with Academic Performance (0.36), but have almost no relationship with actual GPA (0.05) or CGPA (0.01).
+* There is a strong internal correlation between Daytime Fatigue and Concentration Difficulty (0.63). Also, Insomnia Severity is a significant predictor of Fatigue (0.54) and Concentration Difficulty (0.38).
+* Insomnia Severity shows a notable negative correlation with GPA (-0.25) and CGPA (-0.17).
+* There is a strong correlation between GPA and CGPA (0.65). Interestingly, Academic Performance correlates more strongly with GPA (0.40) than it does with any sleep-related metrics. *Missed Classes show very weak or slightly negative correlations with sleep issues, like -0.03 with Insomnia.
 
 **Conclusion**
-* Improving sleep quality and reducing insomnia symptoms appears more impactful for academic outcomes than focusing only on increasing sleep duration.
+* The data shows that sleep quality (insomnia) is a much bigger threat to actual grades than just the number of hours slept. While more sleep may make students feel like they are performing better, the real issues are fatigue and concentration problems caused by insomnia, which lead to lower grades. To truly improve results, the focus should be on improving sleep quality and treating insomnia rather than just trying to spend more hours in bed.
         """.strip())
     else:
         st.warning("Not enough numeric variables available to generate correlation heatmap.")
