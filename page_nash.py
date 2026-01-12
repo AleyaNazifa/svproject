@@ -60,7 +60,7 @@ The focus is on identifying *which behaviours show stronger visual links* to hig
     # ==========================================
     # Figure C1 — Device Usage Distribution
     # ==========================================
-    st.subheader("Figure C1 — Device Usage Before Sleep")
+    st.subheader("Figure B1 — Device Usage Before Sleep")
 
     device_counts = df["DeviceUsage"].value_counts().reset_index()
     device_counts.columns = ["DeviceUsage", "Count"]
@@ -95,7 +95,7 @@ The focus is on identifying *which behaviours show stronger visual links* to hig
     # ==========================================
     # Figure C2 — Device Usage vs Insomnia Severity
     # ==========================================
-    st.subheader("Figure C2 — Insomnia Severity by Device Usage")
+    st.subheader("Figure B2 — Insomnia Severity by Device Usage")
 
     fig2 = px.box(
         df,
@@ -127,7 +127,7 @@ The focus is on identifying *which behaviours show stronger visual links* to hig
     # ==========================================
     # Figure C3 — Caffeine Consumption vs ISI
     # ==========================================
-    st.subheader("Figure C3 — Insomnia Severity by Caffeine Consumption")
+    st.subheader("Figure B3 — Insomnia Severity by Caffeine Consumption")
 
     fig3 = px.box(
         df,
@@ -159,7 +159,7 @@ The focus is on identifying *which behaviours show stronger visual links* to hig
     # ==========================================
     # Figure C4 — Stress Level vs Insomnia Severity
     # ==========================================
-    st.subheader("Figure C4 — Insomnia Severity by Academic Stress Level")
+    st.subheader("Figure B4 — Insomnia Severity by Academic Stress Level")
 
     fig4 = px.violin(
         df,
@@ -192,7 +192,7 @@ The focus is on identifying *which behaviours show stronger visual links* to hig
     # ==========================================
     # Figure C5 — Lifestyle Risk Score vs ISI
     # ==========================================
-    st.subheader("Figure C5 — Combined Lifestyle Risk vs Insomnia Severity")
+    st.subheader("Figure B5 — Combined Lifestyle Risk vs Insomnia Severity")
 
     fig5 = px.scatter(
         df,
