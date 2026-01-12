@@ -294,7 +294,7 @@ def render():
         st.markdown(
             """
 * There is a progressive increase in fatigue as sleep health declines. 
-* Chronic daytime fatigue acts as a major barrier, most likely driving the concentration and performance issues seen in this study.
+* Chronic daytime fatigue acts as a major barrier, likely driving the concentration and performance issues seen in this study.
             """.strip()
         )
         st.divider()
@@ -329,7 +329,7 @@ def render():
         st.markdown(
             """
 * Insomnia severity has a negative correlation with academic self-perception. 
-* Severe insomnia acts as a barrier that makes it more difficult for students to feel like high achiever.
+* Severe insomnia acts as a barrier that makes it more difficult for students to feel like high achievers.
             """.strip()
         )
     else:
@@ -376,9 +376,9 @@ def render():
 
         st.markdown(
             """
-* Insomnia is a much greater threat to grades than the sleep hours. 
-* Fatigue and concentration problems caused by insomnia are the major driver of lower academic performance.
-* The focus should be on treating insomnia rather than just increasing hours in bed.
+* Insomnia is a much greater threat to grades than the sleep hours.
+* Fatigue and concentration problems caused by insomnia are the major drivers of lower academic performance.
+* The focus should be on treating insomnia quality rather than just increasing hours in bed.
             """.strip()
         )
     else:
