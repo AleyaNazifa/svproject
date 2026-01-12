@@ -57,55 +57,23 @@ def render():
     st.subheader("Key Findings: Sleep Pattern Risk Indicators")
     col1, col2, col3, col4 = st.columns(4)
 
-    short_n = (
-        int(df["SleepDurationCategory"].astype(str).eq("Short (<6h)").sum())
-        if "SleepDurationCategory" in df.columns
-        else 0
-    )
-    late_n = (
-        int(df["BedTime"].astype(str).str.contains("After 12 AM", na=False).sum())
-        if "BedTime" in df.columns
-        else 0
-    )
-    poor_quality_n = (
-        int(pd.to_numeric(df["SleepQuality_num"], errors="coerce").isin([1, 2]).sum())
-        if "SleepQuality_num" in df.columns
-        else 0
-    )
+    short_n = int(df["SleepDurationCategory"].astype(str).eq("Short (<6h)").sum()) if "SleepDurationCategory" in df.columns else 0
+    late_n = int(df["BedTime"].astype(str).str.contains("After 12 AM", na=False).sum()) if "BedTime" in df.columns else 0
+    poor_quality_n = int(pd.to_numeric(df["SleepQuality_num"], errors="coerce").isin([1, 2]).sum()) if "SleepQuality_num" in df.columns else 0
 
     both_n = 0
     if {"FrequentDifficultyFallingAsleep", "FrequentNightWakeups"}.issubset(df.columns):
         both_n = int((df["FrequentDifficultyFallingAsleep"] & df["FrequentNightWakeups"]).sum())
 
-    col1.metric(
-        "⏳ Short Sleepers (<6h)",
-        f"{pct(short_n, total):.1f}%",
-        help="Percentage of students sleeping <6 hours.",
-        border=True,
-    )
-    col2.metric(
-        "🌙 Late Bedtime (After 12 AM)",
-        f"{pct(late_n, total):.1f}%",
-        help="Percentage sleeping after midnight on weekdays.",
-        border=True,
-    )
-    col3.metric(
-        "⭐ Poor Sleep Quality (1–2)",
-        f"{pct(poor_quality_n, total):.1f}%",
-        help="Percentage rating sleep quality as 1 or 2.",
-        border=True,
-    )
-    col4.metric(
-        "🚨 Frequent Dual Symptoms",
-        f"{pct(both_n, total):.1f}%",
-        help="Frequent difficulty falling asleep + night wakeups.",
-        border=True,
-    )
+    col1.metric("⏳ Short Sleepers (<6h)", f"{pct(short_n, total):.1f}%", help="Percentage of students sleeping <6 hours.", border=True)
+    col2.metric("🌙 Late Bedtime (After 12 AM)", f"{pct(late_n, total):.1f}%", help="Percentage sleeping after midnight on weekdays.", border=True)
+    col3.metric("⭐ Poor Sleep Quality (1–2)", f"{pct(poor_quality_n, total):.1f}%", help="Percentage rating sleep quality as 1 or 2.", border=True)
+    col4.metric("🚨 Frequent Dual Symptoms", f"{pct(both_n, total):.1f}%", help="Frequent difficulty falling asleep + night wakeups.", border=True)
 
     st.divider()
 
     # -----------------------------
-    # Figure A1 (Option A - ECDF)
+    # Figure A1 (UPDATED - Violin + Box + Points)
     # -----------------------------
     st.subheader("Figure A1 — Sleep Duration Distribution (Estimated Hours)")
 
@@ -119,47 +87,48 @@ def render():
         else:
             mean_sleep = float(a1.mean())
             median_sleep = float(a1.median())
+            q1 = float(a1.quantile(0.25))
+            q3 = float(a1.quantile(0.75))
 
-            fig1 = px.ecdf(
-                a1.to_frame(name="SleepHours_est"),
+            a1_df = pd.DataFrame({"SleepHours_est": a1})
+            a1_df["Group"] = "All Students"
+
+            fig1 = px.violin(
+                a1_df,
                 x="SleepHours_est",
-                markers=False,
-                title="Cumulative Distribution of Estimated Sleep Duration (ECDF)",
+                y="Group",
+                orientation="h",
+                box=True,
+                points="all",
+                title="Distribution of Estimated Sleep Duration",
+                color_discrete_sequence=[SUNSET[2]],
             )
 
-            fig1.add_vline(
-                x=mean_sleep,
-                line_width=3,
-                line_dash="solid",
-                annotation_text=f"Mean: {mean_sleep:.2f}h",
-                annotation_position="top right",
-            )
-            fig1.add_vline(
-                x=median_sleep,
-                line_width=3,
-                line_dash="dash",
-                annotation_text=f"Median: {median_sleep:.2f}h",
-                annotation_position="top left",
-            )
-
+            # Keep the axis clean
             fig1.update_layout(
                 xaxis_title="Hours of Sleep (Estimated)",
-                yaxis_title="Proportion of Students (Cumulative)",
+                yaxis_title="",
                 showlegend=False,
+                height=380,
+                margin=dict(l=20, r=20, t=60, b=20),
             )
 
             st.plotly_chart(fig1, use_container_width=True)
 
+            st.caption(
+                f"Summary: Mean = {mean_sleep:.2f}h | Median = {median_sleep:.2f}h | IQR = {q1:.2f}–{q3:.2f}h"
+            )
+
             st.markdown(
                 f"""
 **Key Insights**
-* The curve rises sharply around **5–6 hours**, meaning most students report sleep in this range.
+* Most points cluster around **5–6 hours**, showing that short sleep is common.
 * **{short_n} students ({pct(short_n, total):.1f}%)** fall into the **short-sleep** group (<6 hours).
-* The **median ({median_sleep:.2f}h)** being below recommended sleep suggests that insufficient sleep is typical.
+* The **median ({median_sleep:.2f}h)** indicates that “typical” sleep is still below recommended levels.
 
 **Conclusion**
-* Overall sleep duration trends below recommended levels, indicating a population-level sleep deficit.
-* Targeting sleep duration improvement (earlier bedtime + consistent schedule) would likely benefit most students.
+* Sleep duration is generally insufficient among respondents, suggesting risk for fatigue and reduced academic functioning.
+* Interventions should focus on **increasing total sleep time** (earlier bedtime + consistent routine).
                 """.strip()
             )
 
@@ -172,8 +141,7 @@ def render():
 
     if "SleepDurationCategory" in df.columns:
         cat_counts = (
-            df["SleepDurationCategory"]
-            .astype(str)
+            df["SleepDurationCategory"].astype(str)
             .value_counts()
             .reindex(SLEEP_CAT_ORDER, fill_value=0)
             .reset_index()
@@ -190,11 +158,7 @@ def render():
             color_discrete_sequence=SUNSET,
         )
         fig2.update_traces(textposition="outside", cliponaxis=False)
-        fig2.update_layout(
-            xaxis_title="Sleep Duration Category",
-            yaxis_title="Number of Students",
-            showlegend=False,
-        )
+        fig2.update_layout(xaxis_title="Sleep Duration Category", yaxis_title="Number of Students", showlegend=False)
         st.plotly_chart(fig2, use_container_width=True)
 
         short_count = int(cat_counts.loc[cat_counts["Category"] == "Short (<6h)", "Count"].sum())
@@ -228,13 +192,7 @@ def render():
         tmp = df.copy()
         tmp["BedTime"] = tmp["BedTime"].astype(str).str.strip()
 
-        fig3 = px.pie(
-            tmp,
-            names="BedTime",
-            hole=0.45,
-            title="Bedtime Distribution (Weekdays)",
-            color_discrete_sequence=SUNSET,
-        )
+        fig3 = px.pie(tmp, names="BedTime", hole=0.45, title="Bedtime Distribution (Weekdays)", color_discrete_sequence=SUNSET)
         fig3.update_layout(showlegend=True)
         st.plotly_chart(fig3, use_container_width=True)
 
@@ -285,23 +243,17 @@ def render():
             category_orders={"BedTime": BEDTIME_ORDER},
             color_discrete_sequence=SUNSET,
         )
-        fig4.update_layout(
-            xaxis_title="Bedtime Category",
-            yaxis_title="Sleep Quality (1=Poor, 5=Excellent)",
-            showlegend=False,
-        )
+        fig4.update_layout(xaxis_title="Bedtime Category", yaxis_title="Sleep Quality (1=Poor, 5=Excellent)", showlegend=False)
         st.plotly_chart(fig4, use_container_width=True)
 
         st.markdown(
             """
 **Key Insights**
-* Sleep quality varies noticeably across bedtime categories.
-* Students with later bedtimes (especially after 12 AM) tend to show lower sleep quality ratings and greater variability.
-* Earlier bedtime groups are generally more stable and show better perceived sleep quality.
+* Sleep quality varies across bedtime categories.
+* Later bedtimes (especially after 12 AM) tend to show lower sleep quality ratings and greater variability.
 
 **Conclusion**
-* Delayed sleep timing appears to be associated with poorer subjective sleep experience.
-* Encouraging earlier and more consistent bedtimes may improve perceived sleep quality and overall sleep satisfaction among students.
+* Encouraging earlier and consistent bedtimes may improve perceived sleep quality.
             """.strip()
         )
     else:
@@ -316,29 +268,18 @@ def render():
 
     if {"DifficultyFallingAsleep", "NightWakeups"}.issubset(df.columns):
         heat = pd.crosstab(df["DifficultyFallingAsleep"], df["NightWakeups"])
-
-        fig5 = px.imshow(
-            heat,
-            text_auto=True,
-            title="Difficulty Falling Asleep vs Night Wakeups",
-            color_continuous_scale=SUNSET,
-        )
-        fig5.update_layout(
-            xaxis_title="Night Wakeups Frequency",
-            yaxis_title="Difficulty Falling Asleep Frequency",
-        )
+        fig5 = px.imshow(heat, text_auto=True, title="Difficulty Falling Asleep vs Night Wakeups", color_continuous_scale=SUNSET)
+        fig5.update_layout(xaxis_title="Night Wakeups Frequency", yaxis_title="Difficulty Falling Asleep Frequency")
         st.plotly_chart(fig5, use_container_width=True)
 
         st.markdown(
             f"""
 **Key Insights**
-* The heatmap shows that insomnia symptoms frequently overlap rather than occur independently.
-* Higher counts cluster where both symptoms happen at similar frequencies (suggesting co-occurrence).
-* **{both_n} students ({pct(both_n, total):.1f}%)** report **frequent** difficulty falling asleep together with **frequent** night awakenings, indicating a subgroup with more severe sleep disruption.
+* The heatmap shows insomnia symptoms often overlap.
+* **{both_n} students ({pct(both_n, total):.1f}%)** show frequent difficulty falling asleep together with frequent night wakeups.
 
 **Conclusion**
-* Co-occurring insomnia symptoms suggest compounded sleep problems rather than isolated issues.
-* This subgroup represents students at higher risk of chronic insomnia and may require targeted support beyond general sleep advice.
+* Co-occurring symptoms suggest a subgroup with more severe sleep disruption and higher intervention need.
             """.strip()
         )
     else:
