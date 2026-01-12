@@ -108,41 +108,72 @@ def render():
 
     st.divider()
 
-    # -----------------------------
-    # Figure A1 (UPDATED VISUALIZATION)
-    # -----------------------------
-    st.subheader("Figure A1 — Sleep Duration Distribution (Estimated Hours)")
+# -----------------------------
+# Figure A1 (UPDATED - Better Visualization)
+# -----------------------------
+st.subheader("Figure A1 — Sleep Duration Distribution (Estimated Hours)")
 
-    if "SleepHours_est" in df.columns:
-        # Box plot + points (clear distribution + outliers)
-        fig1 = px.box(
-            df,
-            y="SleepHours_est",
-            points="all",
-            title="Distribution of Estimated Sleep Duration",
-            color_discrete_sequence=SUNSET,
+if "SleepHours_est" in df.columns:
+    # Clean numeric series
+    a1 = pd.to_numeric(df["SleepHours_est"], errors="coerce").dropna()
+
+    if a1.empty:
+        st.warning("SleepHours_est has no valid numeric values.")
+    else:
+        mean_sleep = float(a1.mean())
+        median_sleep = float(a1.median())
+
+        # Make a nicer histogram (fixed bin size)
+        fig1 = px.histogram(
+            a1,
+            x=a1,
+            nbins=12,
+            title="Sleep Duration Distribution (Estimated Hours)",
+            opacity=0.9,
+            marginal="rug",  # adds dot rug (prettier and shows density)
+            color_discrete_sequence=[SUNSET[2]],
         )
+
+        # Add mean + median reference lines
+        fig1.add_vline(
+            x=mean_sleep,
+            line_width=3,
+            line_dash="solid",
+            annotation_text=f"Mean: {mean_sleep:.2f}h",
+            annotation_position="top right",
+        )
+        fig1.add_vline(
+            x=median_sleep,
+            line_width=3,
+            line_dash="dash",
+            annotation_text=f"Median: {median_sleep:.2f}h",
+            annotation_position="top left",
+        )
+
         fig1.update_layout(
-            yaxis_title="Hours of Sleep (Estimated)",
-            xaxis_title="",
+            xaxis_title="Hours of Sleep (Estimated)",
+            yaxis_title="Number of Students",
             showlegend=False,
         )
+
         st.plotly_chart(fig1, use_container_width=True)
 
         st.markdown(
             f"""
 **Key Insights**
-* Sleep duration is heavily concentrated below recommended sleep levels, with most responses around **5–6 hours**.
-* **{short_n} students ({pct(short_n, total):.1f}%)** are short sleepers (<6 hours), indicating widespread sleep deprivation among respondents.
+* Most students cluster around the **5–6 hour** range, indicating a common sleep pattern below recommended levels.
+* **{short_n} students ({pct(short_n, total):.1f}%)** fall into the **short sleep** category (<6 hours).
+* The **mean** sleep duration is **{mean_sleep:.2f} hours**, while the **median** is **{median_sleep:.2f} hours**, suggesting that insufficient sleep is typical across the group.
 
 **Conclusion**
-* Short sleep is highly prevalent and represents a significant sleep health risk among UMK students.
-* This pattern suggests increased likelihood of daytime fatigue, reduced alertness, and weaker academic functioning, supporting the need for sleep hygiene awareness initiatives.
+* The distribution indicates that short sleep is widespread among UMK students, which may increase risk of fatigue and reduced academic functioning.
+* Improving sleep habits (especially total sleep time) should be a priority for awareness and intervention.
             """.strip()
         )
-    else:
-        st.warning("SleepHours_est is missing. Please verify Nazifa cleaning module.")
-    st.divider()
+
+else:
+    st.warning("SleepHours_est is missing. Please verify Nazifa cleaning module.")
+st.divider()
 
     # -----------------------------
     # Figure A2
