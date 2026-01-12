@@ -72,7 +72,7 @@ def render():
     # 🎯 OBJECTIVE 3
     # ==============================================
     st.markdown("""
-    ## 🎯 **Objective 3**
+    ## **Objective 3**
     To evaluate the impact of insufficient sleep on academic performance, including concentration difficulties, fatigue, class attendance, and academic achievement indicators (GPA and self-rated performance). 
     """)
 
