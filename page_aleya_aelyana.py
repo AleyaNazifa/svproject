@@ -147,7 +147,7 @@ def render():
     # ------------------------------------------
     # a) Concentration Difficulty (Grouped bar)
     # ------------------------------------------
-    st.subheader("a) Concentration Difficulty by Insomnia Category")
+    st.subheader("Figure C1 - Concentration Difficulty by Insomnia Category")
 
     if {"Insomnia_Category", "ConcentrationDifficulty"}.issubset(df.columns):
         concentration_crosstab = pd.crosstab(
@@ -195,7 +195,7 @@ def render():
     # ------------------------------------------
     # b) GPA vs Insomnia Index (Box plot)
     # ------------------------------------------
-    st.subheader("b) Insomnia Severity Index Across GPA Category")
+    st.subheader("Figure C2 - Insomnia Severity Index Across GPA Category")
 
     if {"GPA", "InsomniaSeverity_index"}.issubset(df.columns):
         gpa_order = sorted(df["GPA"].dropna().unique().tolist())
@@ -238,7 +238,7 @@ def render():
     # ------------------------------------------
     # c) Assignment Impact (Stacked bar)
     # ------------------------------------------
-    st.subheader("c) Assignment Impact by Insomnia Category")
+    st.subheader("Figure C3 - Assignment Impact by Insomnia Category")
 
     if {"Insomnia_Category", "AssignmentImpact"}.issubset(df.columns):
         assignment_table = pd.crosstab(
@@ -289,7 +289,7 @@ def render():
     # ------------------------------------------
     # d) Daytime Fatigue (Stacked bar)
     # ------------------------------------------
-    st.subheader("d) Fatigue Level by Insomnia Category")
+    st.subheader("Figure C4 - Fatigue Level by Insomnia Category")
 
     if {"Insomnia_Category", "DaytimeFatigue"}.issubset(df.columns):
         fatigue_table = pd.crosstab(df["Insomnia_Category"], df["DaytimeFatigue"], dropna=False)
@@ -330,7 +330,7 @@ def render():
     # ------------------------------------------
     # e) Academic Performance (Box plot)
     # ------------------------------------------
-    st.subheader("e) Academic Performance by Insomnia Category")
+    st.subheader("Figure C5 - Academic Performance by Insomnia Category")
 
     if {"Insomnia_Category", "AcademicPerformance"}.issubset(df.columns):
         fig_e = px.box(
@@ -370,7 +370,7 @@ def render():
     # ------------------------------------------
     # f) Correlation Heatmap
     # ------------------------------------------
-    st.subheader("f) Correlation Heatmap: Sleep Issues vs. Academic Outcomes")
+    st.subheader("Figure C6 - Correlation Heatmap: Sleep Issues vs. Academic Outcomes")
 
     corr_columns = [
         "SleepHours_est",
