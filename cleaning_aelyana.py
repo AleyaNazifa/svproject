@@ -10,9 +10,7 @@ import pandas as pd
 # -----------------------------
 def _norm_col(col: str) -> str:
     """
-    Normalize header text robustly:
-    - handles trailing spaces, multiple spaces, newlines/tabs
-    - handles non-breaking spaces from Google Sheets/Forms
+    Normalize header text robustly.
     """
     s = str(col).replace("\u00A0", " ")
     s = s.replace("\n", " ").replace("\t", " ")
@@ -22,8 +20,7 @@ def _norm_col(col: str) -> str:
 
 def _map_freq(x: object) -> int:
     """
-    Frequency mapping (robust to minor wording differences).
-    Produces 0..4.
+    Frequency mapping (0..4).
     """
     s = str(x).strip()
     mapping = {
@@ -49,8 +46,7 @@ def _map_freq(x: object) -> int:
 
 def _sleep_hours_to_est(val: object) -> float:
     """
-    Convert sleep duration response to numeric estimate (hours).
-    Handles your dataset variants.
+    Convert sleep duration response to numeric estimate.
     """
     if pd.isna(val):
         return np.nan
@@ -76,7 +72,6 @@ def _sleep_hours_to_est(val: object) -> float:
     if x in mapping:
         return float(mapping[x])
 
-    # fallback: parse numbers and average
     nums = re.findall(r"\d+\.?\d*", x.replace("–", "-"))
     if len(nums) == 1:
         return float(nums[0])
@@ -100,24 +95,12 @@ def _categorize_insomnia(score: float) -> str | float:
 # Main function used by Streamlit page
 # -----------------------------
 def prepare_aelyana_data(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Prepare cleaned dataframe for Aelyana (Academic Impact page).
-
-    Accepts:
-      - raw Google Forms dataframe (long question headers), OR
-      - dataframe already renamed by data_loader.py (short column names)
-
-    Returns:
-      - dataframe with Aelyana-specific engineered variables:
-        InsomniaSeverity_index, Insomnia_Category, + numeric academic impact features.
-    """
     if df is None or len(df) == 0:
         return df
 
     out = df.copy()
     out.columns = [_norm_col(c) for c in out.columns]
 
-    # Rename long Google Form questions -> short names (only if short names missing)
     rename_candidates = {
         "Timestamp": "Timestamp",
         "How often do you have difficulty falling asleep at night?": "DifficultyFallingAsleep",
@@ -142,14 +125,17 @@ def prepare_aelyana_data(df: pd.DataFrame) -> pd.DataFrame:
     if rename_dict:
         out = out.rename(columns=rename_dict)
 
-    # Timestamp -> datetime
+    # --- PEMBETULAN TYPO GPA ---
+    # Membetulkan ralat 2.50 - 2.49 kepada 2.50 - 2.99
+    typo_map = {"2.50 - 2.49": "2.50 - 2.99"}
+    if "GPA" in out.columns:
+        out["GPA"] = out["GPA"].replace(typo_map)
+    if "CGPA" in out.columns:
+        out["CGPA"] = out["CGPA"].replace(typo_map)
+
     if "Timestamp" in out.columns:
         out["Timestamp"] = pd.to_datetime(out["Timestamp"], errors="coerce")
 
-    # -----------------------------
-    # ISI-like index (0..16-ish in your original method)
-    # -----------------------------
-    # SleepQuality is numeric 1..5 (5=excellent). Convert to risk points.
     if "SleepQuality" in out.columns:
         sq_num = pd.to_numeric(out["SleepQuality"], errors="coerce")
         out["SleepQuality_Score"] = (5 - sq_num).clip(lower=0, upper=4).fillna(0)
@@ -169,9 +155,6 @@ def prepare_aelyana_data(df: pd.DataFrame) -> pd.DataFrame:
 
     out["Insomnia_Category"] = out["InsomniaSeverity_index"].apply(_categorize_insomnia)
 
-    # -----------------------------
-    # Feature engineering for analytics
-    # -----------------------------
     if "SleepHours" in out.columns and "SleepHours_est" not in out.columns:
         out["SleepHours_est"] = out["SleepHours"].apply(_sleep_hours_to_est)
 
@@ -199,9 +182,12 @@ def prepare_aelyana_data(df: pd.DataFrame) -> pd.DataFrame:
     if "MissedClasses" in out.columns:
         out["MissedClasses_numeric"] = out["MissedClasses"].astype(str).map(missed_map).fillna(0)
 
+    # Kemas kini peta GPA dengan julat yang betul
     gpa_map = {
         "Below 2.00": 1.5,
-        "2.00 - 2.99": 2.5,
+        "< 2.00": 1.5,
+        "2.00 - 2.49": 2.25,
+        "2.50 - 2.99": 2.75,
         "3.00 - 3.69": 3.35,
         "3.70 - 4.00": 3.85,
     }
@@ -211,4 +197,3 @@ def prepare_aelyana_data(df: pd.DataFrame) -> pd.DataFrame:
         out["CGPA_numeric"] = out["CGPA"].map(gpa_map)
 
     return out
-
