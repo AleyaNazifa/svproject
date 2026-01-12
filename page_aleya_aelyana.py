@@ -230,7 +230,7 @@ def render():
 * As GPA decreases, the insomnia severity "box" shifts upward. Higher GPA is associated with more consistent and lower insomnia scores.
 * GPA 3.70 - 4.00 category show lowest median insomnia score (4), placing these students in the "Low/No Insomnia" category.
 * GPA 3.00 - 3.69 category show median score increases to 7. Interestingly, outliers reaching scores of 12-13 indicate that some students maintain good grades despite high insomnia.
-* GPA 2.50 - 2.49 group show highest spread and maximum scores (reaching 14), indicating that this group experiences the strongest insomnia symptoms.
+* GPA 2.50 - 2.99 group show highest spread and maximum scores (reaching 14), indicating that this group experiences the strongest insomnia symptoms.
 
 **Conclusion**
 * Managing insomnia is a key factor in academic success. Students with the best grades tend to maintain the healthiest sleep profiles.
