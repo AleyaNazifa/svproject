@@ -37,9 +37,9 @@ def render():
     )
 
     # Debug marker (remove later if you want)
-    st.caption("Nazifa page version: UPDATED-A1-BOXPLOT ✅")
+    st.caption("Nazifa page version: FIXED-INDENT + UPDATED-A1 ✅")
 
-    # Objective: per-page (instead of home)
+    # Objective
     st.markdown(
         """
 <div class="card">
@@ -61,127 +61,96 @@ def render():
     st.subheader("Key Findings: Sleep Pattern Risk Indicators")
     col1, col2, col3, col4 = st.columns(4)
 
-    short_n = (
-        int(df["SleepDurationCategory"].astype(str).eq("Short (<6h)").sum())
-        if "SleepDurationCategory" in df.columns
-        else 0
-    )
-    late_n = (
-        int(df["BedTime"].astype(str).str.contains("After 12 AM", na=False).sum())
-        if "BedTime" in df.columns
-        else 0
-    )
-    poor_quality_n = (
-        int(df["SleepQuality_num"].isin([1, 2]).sum())
-        if "SleepQuality_num" in df.columns
-        else 0
-    )
+    short_n = int(df["SleepDurationCategory"].astype(str).eq("Short (<6h)").sum()) if "SleepDurationCategory" in df.columns else 0
+    late_n = int(df["BedTime"].astype(str).str.contains("After 12 AM", na=False).sum()) if "BedTime" in df.columns else 0
+    poor_quality_n = int(df["SleepQuality_num"].isin([1, 2]).sum()) if "SleepQuality_num" in df.columns else 0
 
     both_n = 0
     if {"FrequentDifficultyFallingAsleep", "FrequentNightWakeups"}.issubset(df.columns):
         both_n = int((df["FrequentDifficultyFallingAsleep"] & df["FrequentNightWakeups"]).sum())
 
-    col1.metric(
-        "⏳ Short Sleepers (<6h)",
-        f"{pct(short_n, total):.1f}%",
-        help="Percentage of students sleeping <6 hours.",
-        border=True,
-    )
-    col2.metric(
-        "🌙 Late Bedtime (After 12 AM)",
-        f"{pct(late_n, total):.1f}%",
-        help="Percentage sleeping after midnight on weekdays.",
-        border=True,
-    )
-    col3.metric(
-        "⭐ Poor Sleep Quality (1–2)",
-        f"{pct(poor_quality_n, total):.1f}%",
-        help="Percentage rating sleep quality as 1 or 2.",
-        border=True,
-    )
-    col4.metric(
-        "🚨 Frequent Dual Symptoms",
-        f"{pct(both_n, total):.1f}%",
-        help="Frequent difficulty falling asleep + night wakeups.",
-        border=True,
-    )
+    col1.metric("⏳ Short Sleepers (<6h)", f"{pct(short_n, total):.1f}%", help="Percentage of students sleeping <6 hours.", border=True)
+    col2.metric("🌙 Late Bedtime (After 12 AM)", f"{pct(late_n, total):.1f}%", help="Percentage sleeping after midnight on weekdays.", border=True)
+    col3.metric("⭐ Poor Sleep Quality (1–2)", f"{pct(poor_quality_n, total):.1f}%", help="Percentage rating sleep quality as 1 or 2.", border=True)
+    col4.metric("🚨 Frequent Dual Symptoms", f"{pct(both_n, total):.1f}%", help="Frequent difficulty falling asleep + night wakeups.", border=True)
 
     st.divider()
 
-# -----------------------------
-# Figure A1 (UPDATED - Better Visualization)
-# -----------------------------
-st.subheader("Figure A1 — Sleep Duration Distribution (Estimated Hours)")
+    # -----------------------------
+    # Figure A1 (UPDATED)
+    # -----------------------------
+    st.subheader("Figure A1 — Sleep Duration Distribution (Estimated Hours)")
 
-if "SleepHours_est" in df.columns:
-    # Clean numeric series
-    a1 = pd.to_numeric(df["SleepHours_est"], errors="coerce").dropna()
-
-    if a1.empty:
-        st.warning("SleepHours_est has no valid numeric values.")
+    if "SleepHours_est" not in df.columns:
+        st.warning("SleepHours_est is missing. Please verify Nazifa cleaning module.")
     else:
-        mean_sleep = float(a1.mean())
-        median_sleep = float(a1.median())
+        a1 = pd.to_numeric(df["SleepHours_est"], errors="coerce").dropna()
 
-        # Make a nicer histogram (fixed bin size)
-        fig1 = px.histogram(
-            a1,
-            x=a1,
-            nbins=12,
-            title="Sleep Duration Distribution (Estimated Hours)",
-            opacity=0.9,
-            marginal="rug",  # adds dot rug (prettier and shows density)
-            color_discrete_sequence=[SUNSET[2]],
-        )
+        if a1.empty:
+            st.warning("SleepHours_est has no valid numeric values.")
+        else:
+            mean_sleep = float(a1.mean())
+            median_sleep = float(a1.median())
 
-        # Add mean + median reference lines
-        fig1.add_vline(
-            x=mean_sleep,
-            line_width=3,
-            line_dash="solid",
-            annotation_text=f"Mean: {mean_sleep:.2f}h",
-            annotation_position="top right",
-        )
-        fig1.add_vline(
-            x=median_sleep,
-            line_width=3,
-            line_dash="dash",
-            annotation_text=f"Median: {median_sleep:.2f}h",
-            annotation_position="top left",
-        )
+            # Histogram + rug + mean/median lines
+            fig1 = px.histogram(
+                a1.to_frame(name="SleepHours_est"),
+                x="SleepHours_est",
+                nbins=12,
+                title="Distribution of Estimated Sleep Duration",
+                opacity=0.9,
+                marginal="rug",
+                color_discrete_sequence=[SUNSET[2]],
+            )
 
-        fig1.update_layout(
-            xaxis_title="Hours of Sleep (Estimated)",
-            yaxis_title="Number of Students",
-            showlegend=False,
-        )
+            fig1.add_vline(
+                x=mean_sleep,
+                line_width=3,
+                line_dash="solid",
+                annotation_text=f"Mean: {mean_sleep:.2f}h",
+                annotation_position="top right",
+            )
+            fig1.add_vline(
+                x=median_sleep,
+                line_width=3,
+                line_dash="dash",
+                annotation_text=f"Median: {median_sleep:.2f}h",
+                annotation_position="top left",
+            )
 
-        st.plotly_chart(fig1, use_container_width=True)
+            fig1.update_layout(
+                xaxis_title="Hours of Sleep (Estimated)",
+                yaxis_title="Number of Students",
+                showlegend=False,
+            )
 
-        st.markdown(
-            f"""
+            st.plotly_chart(fig1, use_container_width=True)
+
+            st.markdown(
+                f"""
 **Key Insights**
 * Most students cluster around the **5–6 hour** range, indicating a common sleep pattern below recommended levels.
 * **{short_n} students ({pct(short_n, total):.1f}%)** fall into the **short sleep** category (<6 hours).
-* The **mean** sleep duration is **{mean_sleep:.2f} hours**, while the **median** is **{median_sleep:.2f} hours**, suggesting that insufficient sleep is typical across the group.
+* The **mean** sleep duration is **{mean_sleep:.2f} hours**, while the **median** is **{median_sleep:.2f} hours**, suggesting insufficient sleep is typical.
 
 **Conclusion**
-* The distribution indicates that short sleep is widespread among UMK students, which may increase risk of fatigue and reduced academic functioning.
-* Improving sleep habits (especially total sleep time) should be a priority for awareness and intervention.
-            """.strip()
-        )
+* Short sleep is widespread among UMK students and may increase risk of fatigue and reduced academic functioning.
+* Improving total sleep time should be a priority for sleep awareness and intervention.
+                """.strip()
+            )
 
-else:
-    st.warning("SleepHours_est is missing. Please verify Nazifa cleaning module.")
+    st.divider()
 
     # -----------------------------
     # Figure A2
     # -----------------------------
     st.subheader("Figure A2 — Sleep Duration Categories (Short / Adequate / Long)")
-    if "SleepDurationCategory" in df.columns:
+
+    if "SleepDurationCategory" not in df.columns:
+        st.warning("SleepDurationCategory is missing. Please verify Nazifa cleaning module.")
+    else:
         cat_counts = (
-            df["SleepDurationCategory"]
-            .astype(str)
+            df["SleepDurationCategory"].astype(str)
             .value_counts()
             .reindex(SLEEP_CAT_ORDER, fill_value=0)
             .reset_index()
@@ -205,7 +174,6 @@ else:
         )
         st.plotly_chart(fig2, use_container_width=True)
 
-        # For accurate counts per category
         short_count = int(cat_counts.loc[cat_counts["Category"] == "Short (<6h)", "Count"].sum())
         adequate_count = int(cat_counts.loc[cat_counts["Category"] == "Adequate (6–8h)", "Count"].sum())
         long_count = int(cat_counts.loc[cat_counts["Category"] == "Long (>8h)", "Count"].sum())
@@ -219,28 +187,34 @@ else:
 * **{long_count} students ({pct(long_count, total):.1f}%)** report long sleep (>8 hours).
 
 **Conclusion**
-* The dominance of the short-sleep category highlights that insufficient sleep is the norm rather than the exception.
+* The dominance of the short-sleep category shows insufficient sleep is the norm rather than the exception.
 * This categorisation clearly identifies a high-risk group that may benefit most from sleep hygiene education and behavioural interventions.
             """.strip()
         )
-    else:
-        st.warning("SleepDurationCategory is missing. Please verify Nazifa cleaning module.")
+
     st.divider()
 
     # -----------------------------
     # Figure A3
     # -----------------------------
     st.subheader("Figure A3 — Weekday Bedtime Distribution")
-    if "BedTime" in df.columns:
+
+    if "BedTime" not in df.columns:
+        st.warning("BedTime is missing. Please verify Nazifa cleaning module.")
+    else:
         tmp = df.copy()
-        if "BedTime_order" in tmp.columns:
-            tmp["BedTime_order"] = pd.Categorical(
-                tmp["BedTime"].astype(str), categories=BEDTIME_ORDER, ordered=True
-            )
-            tmp = tmp.sort_values("BedTime_order")
+        tmp["BedTime"] = tmp["BedTime"].astype(str).str.strip()
+        tmp["BedTime"] = pd.Categorical(tmp["BedTime"], categories=BEDTIME_ORDER, ordered=True)
+
+        # counts based on the defined order
+        bedtime_counts = tmp["BedTime"].value_counts(dropna=False).reindex(BEDTIME_ORDER, fill_value=0)
+        after_12 = int(bedtime_counts.get("After 12 AM", 0))
+        between_11_12 = int(bedtime_counts.get("11 PM–12 AM", 0))
+        between_10_11 = int(bedtime_counts.get("10–11 PM", 0))
+        between_9_10 = int(bedtime_counts.get("9–10 PM", 0))
 
         fig3 = px.pie(
-            tmp,
+            tmp.dropna(subset=["BedTime"]),
             names="BedTime",
             hole=0.45,
             title="Bedtime Distribution (Weekdays)",
@@ -248,13 +222,6 @@ else:
         )
         fig3.update_layout(showlegend=True)
         st.plotly_chart(fig3, use_container_width=True)
-
-        # Optional: counts per bedtime (using your labels)
-        bedtime_counts = tmp["BedTime"].astype(str).value_counts()
-        after_12 = int(bedtime_counts.get("After 12 AM", 0))
-        between_11_12 = int(bedtime_counts.get("11 PM–12 AM", 0))
-        between_10_11 = int(bedtime_counts.get("10–11 PM", 0))
-        between_9_10 = int(bedtime_counts.get("9–10 PM", 0))
 
         st.markdown(
             f"""
@@ -265,19 +232,21 @@ else:
 * Early bedtimes are uncommon: **{between_10_11} students ({pct(between_10_11, total):.1f}%)** between **10–11 PM** and **{between_9_10} students ({pct(between_9_10, total):.1f}%)** between **9–10 PM**.
 
 **Conclusion**
-* Delayed bedtime is extremely common and likely contributes to reduced total sleep duration, especially when early class schedules are present.
+* Delayed bedtime is extremely common and likely contributes to reduced total sleep duration, especially with early class schedules.
 * Late-night sleep timing represents a key behavioural risk factor for chronic sleep deprivation among students.
             """.strip()
         )
-    else:
-        st.warning("BedTime is missing. Please verify Nazifa cleaning module.")
+
     st.divider()
 
     # -----------------------------
     # Figure A4
     # -----------------------------
     st.subheader("Figure A4 — Sleep Quality by Bedtime")
-    if {"BedTime", "SleepQuality_num"}.issubset(df.columns):
+
+    if not {"BedTime", "SleepQuality_num"}.issubset(df.columns):
+        st.warning("BedTime or SleepQuality_num is missing. Please verify Nazifa cleaning module.")
+    else:
         df_plot = df.copy()
         df_plot["BedTime"] = pd.Categorical(
             df_plot["BedTime"].astype(str).str.strip(),
@@ -286,7 +255,7 @@ else:
         )
 
         fig4 = px.violin(
-            df_plot,
+            df_plot.dropna(subset=["BedTime", "SleepQuality_num"]),
             x="BedTime",
             y="SleepQuality_num",
             box=True,
@@ -305,30 +274,34 @@ else:
         st.markdown(
             """
 **Key Insights**
-* Sleep quality varies noticeably across bedtime categories.
-* Students with later bedtimes (especially after 12 AM) tend to show lower sleep quality ratings and greater variability.
-* Earlier bedtime groups are generally more stable and show better perceived sleep quality.
+* Sleep quality varies across bedtime categories.
+* Later bedtime groups (especially **After 12 AM**) tend to show lower ratings and greater variability.
+* Earlier bedtime groups are generally more stable and report better perceived sleep quality.
 
 **Conclusion**
-* Delayed sleep timing appears to be associated with poorer subjective sleep experience.
-* Encouraging earlier and more consistent bedtimes may improve perceived sleep quality and overall sleep satisfaction among students.
+* Delayed sleep timing appears associated with poorer subjective sleep experience.
+* Encouraging earlier and more consistent bedtimes may improve sleep satisfaction among students.
             """.strip()
         )
-    else:
-        st.warning("BedTime or SleepQuality_num is missing. Please verify Nazifa cleaning module.")
+
     st.divider()
 
     # -----------------------------
     # Figure A5
     # -----------------------------
     st.subheader("Figure A5 — Co-occurrence of Insomnia Symptoms")
-    if {"DifficultyFallingAsleep", "NightWakeups"}.issubset(df.columns):
+
+    if not {"DifficultyFallingAsleep", "NightWakeups"}.issubset(df.columns):
+        st.warning("DifficultyFallingAsleep or NightWakeups is missing. Please verify Nazifa cleaning module.")
+    else:
         heat = pd.crosstab(df["DifficultyFallingAsleep"], df["NightWakeups"])
+
         fig5 = px.imshow(
             heat,
             text_auto=True,
             title="Difficulty Falling Asleep vs Night Wakeups",
             color_continuous_scale=SUNSET,
+            aspect="auto",
         )
         fig5.update_layout(
             xaxis_title="Night Wakeups Frequency",
@@ -339,17 +312,15 @@ else:
         st.markdown(
             f"""
 **Key Insights**
-* The heatmap shows that insomnia symptoms frequently overlap rather than occur independently.
-* Higher counts cluster where both symptoms happen at similar frequencies (suggesting co-occurrence).
-* **{both_n} students ({pct(both_n, total):.1f}%)** report **frequent** difficulty falling asleep together with **frequent** night awakenings, indicating a subgroup with more severe sleep disruption.
+* The heatmap shows insomnia symptoms often **co-occur** rather than appear independently.
+* Higher counts cluster where both symptoms happen at similar frequencies (showing overlap).
+* **{both_n} students ({pct(both_n, total):.1f}%)** report **frequent** difficulty falling asleep together with **frequent** night awakenings, indicating a higher-risk subgroup.
 
 **Conclusion**
-* Co-occurring insomnia symptoms suggest compounded sleep problems rather than isolated issues.
-* This subgroup represents students at higher risk of chronic insomnia and may require targeted support beyond general sleep advice.
+* Co-occurring symptoms suggest compounded sleep disruption, not isolated issues.
+* This subgroup may benefit from targeted support beyond general sleep advice.
             """.strip()
         )
-    else:
-        st.warning("DifficultyFallingAsleep or NightWakeups is missing. Please verify Nazifa cleaning module.")
 
 
 render()
