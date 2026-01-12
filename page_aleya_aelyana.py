@@ -23,6 +23,12 @@ def render():
 
     raw = get_df()
     df = prepare_aelyana_data(raw)
+    
+    # --- TAMBAH KOD INI SAHAJA ---
+    if df is not None:
+        df['GPA'] = df['GPA'].replace('2.50 - 2.49', '2.50 - 2.99')
+        df['CGPA'] = df['CGPA'].replace('2.50 - 2.49', '2.50 - 2.99')
+    # -----------------------------
 
     if df is None or df.empty:
         st.error("No data available.")
@@ -198,7 +204,7 @@ def render():
     st.subheader("Figure C2 - Insomnia Severity Index Across GPA Category")
 
     if {"GPA", "InsomniaSeverity_index"}.issubset(df.columns):
-        gpa_order = sorted(df["GPA"].dropna().unique().tolist())
+        gpa_order = ["2.00 - 2.49", "2.50 - 2.99", "3.00 - 3.69", "3.70 - 4.00"]
 
         fig_b = px.box(
             df,
