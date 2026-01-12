@@ -66,6 +66,7 @@ def render():
     # Header
     # ------------------------------------------
     st.title("Interpretation Dashboard: Impact of Sleep Related Issues on Academic Performance")
+    st.divider()
 
     # ==============================================
     # 🎯 OBJECTIVE 3
