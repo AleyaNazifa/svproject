@@ -173,7 +173,6 @@ if "SleepHours_est" in df.columns:
 
 else:
     st.warning("SleepHours_est is missing. Please verify Nazifa cleaning module.")
-st.divider()
 
     # -----------------------------
     # Figure A2
