@@ -75,20 +75,6 @@ def render():
     To evaluate the impact of insufficient sleep on academic performance, including concentration difficulties, fatigue, class attendance, and academic achievement indicators (GPA and self-rated performance). 
     """)
 
-    # Objective card (moved off Home)
-    st.markdown(
-        """
-<div class="card">
-  <div class="card-title">Objective (Academic Impact)</div>
-  <div class="interpretation">
-    To evaluate the impact of insufficient sleep on academic performance, including concentration difficulties, fatigue,
-    class attendance, and academic achievement indicators (GPA and self-rated performance).
-  </div>
-</div>
-""",
-        unsafe_allow_html=True,
-    )
-
     st.divider()
 
     # ------------------------------------------
