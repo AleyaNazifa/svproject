@@ -174,9 +174,9 @@ def render():
 
         st.markdown(
             """
-    **Interpretation and Analysis**
-    * There is a direct relationship between insomnia severity and difficulty maintaining focus. 
-    * Severe insomnia significantly increases the risk of cognitive impairment, which can lead to academic failure.
+**Interpretation and Analysis**
+* There is a direct relationship between insomnia severity and difficulty maintaining focus. 
+* Severe insomnia significantly increases the risk of cognitive impairment, which can lead to academic failure.
             """.strip()
         )
         st.divider()
