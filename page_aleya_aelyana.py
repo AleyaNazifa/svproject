@@ -71,10 +71,17 @@ def render():
     # ==============================================
     # 🎯 OBJECTIVE 3
     # ==============================================
-    st.markdown("""
-    ## **Objective 3**
-    To evaluate the impact of insufficient sleep on academic performance, including concentration difficulties, fatigue, class attendance, and academic achievement indicators (GPA and self-rated performance). 
-    """)
+    st.markdown(
+        """
+<div class="card">
+  <div class="card-title">Objective (Sleep Patterns)</div>
+  <div class="interpretation">
+    To evaluate the impact of insufficient sleep on academic performance, including concentration difficulties, fatigue, class attendance, and academic achievement indicators (GPA and self-rated performance).
+  </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
 
     st.divider()
 
