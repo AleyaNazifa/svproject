@@ -30,7 +30,7 @@ def render():
 
     total = len(df)
 
-    st.title("Interpretation Dashboard: Sleep Patterns & Insomnia Symptoms (Nazifa)")
+    st.title("Exploration Dashboard: Sleep Patterns & Insomnia Symptoms (Nazifa)")
     st.markdown(
         "This page explores **sleep duration**, **bedtime timing**, **sleep quality**, and **core insomnia symptoms** "
         "to identify sleep-risk patterns among UMK students."
