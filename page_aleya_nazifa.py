@@ -39,7 +39,7 @@ def render():
     st.markdown(
         """
 <div class="card">
-  <div class="card-title">Objective (Sleep Patterns)</div>
+  <div class="card-title">🎯Objective (Sleep Patterns)</div>
   <div class="interpretation">
     To analyze sleep patterns and insomnia severity among UMK students by examining sleep duration categories,
     bedtime habits, sleep quality across bedtimes, symptom co-occurrence, and how bedtime relates to sleep duration.
