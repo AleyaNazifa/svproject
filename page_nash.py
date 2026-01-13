@@ -28,7 +28,7 @@ def render():
 
     total = len(df)
 
-    st.title("Lifestyle & Stress Factors and Insomnia Severity")
+    st.title("Analysis Dashboard: Lifestyle & Stress Factors and Insomnia Severity")
     st.markdown(
         """
 This dashboard investigates how **specific lifestyle behaviours** and **academic stress levels**
