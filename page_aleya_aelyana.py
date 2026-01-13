@@ -212,6 +212,7 @@ def render():
 
         st.markdown(
             """
+**Interpretation and Analysis**
 * Better academic performance is closely linked to lower levels of insomnia. 
 * Students with the highest grades tend to maintain the healthiest sleep profiles.
             """.strip()
@@ -258,6 +259,7 @@ def render():
 
         st.markdown(
             """
+**Interpretation and Analysis**
 * The insomnia severity is directly correlated with academic disruption. 
 * As sleep health worsens, the ability to complete coursework effectively is significantly compromised.
             """.strip()
@@ -294,6 +296,7 @@ def render():
 
         st.markdown(
             """
+**Interpretation and Analysis**
 * There is a progressive increase in fatigue as sleep health declines. 
 * Chronic daytime fatigue acts as a major barrier, likely driving the concentration and performance issues seen in this study.
             """.strip()
@@ -329,6 +332,7 @@ def render():
 
         st.markdown(
             """
+**Interpretation and Analysis**
 * Insomnia severity has a negative correlation with academic self-perception. 
 * Severe insomnia acts as a barrier that makes it more difficult for students to feel like high achievers.
             """.strip()
@@ -377,6 +381,7 @@ def render():
 
         st.markdown(
             """
+**Interpretation and Analysis**
 * Insomnia is a much greater threat to grades than the sleep hours.
 * Fatigue and concentration problems caused by insomnia are the major drivers of lower academic performance.
 * The focus should be on treating insomnia quality rather than just increasing hours in bed.
